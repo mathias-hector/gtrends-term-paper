@@ -14,7 +14,12 @@ references:
 
 ```{r, include = FALSE}
 # Her indgår de pakker, som skal loades for at man kan lave sin analyse
-# include = FALSE betyder, at denne code chunk ikke indgår i PDF-outputtet 
+# include = FALSE betyder, at denne code chunk ikke indgår i PDF-outputtet
+
+library(gtrendsR)
+library(tidyverse)
+library(data.table)
+library(plyr)
 ```
 
 ## Introduction

@@ -1,0 +1,220 @@
+The main results are in gtrends_object$interest_over_time, which you can use to compute a single sum-of-interest variable for each country and election year. This could be achieved separately for each gtrends object (aggregate > combine), or you bind the interest_over_time datasets together and then aggregate by country (combine > aggregate).
+
+```{r}
+AT14$interest_over_time
+```
+
+Here I try merging the interest over time 
+
+First I need to make new objects only containg Interest over time (IOT)
+
+```{r}
+AT14IOT <- as_tibble(AT14$interest_over_time)
+AT19IOT <- as_tibble(AT19$interest_over_time)
+
+CZ14IOT <- as_tibble(CZ14$interest_over_time)
+CZ19IOT <- as_tibble(CZ19$interest_over_time)
+
+DE14IOT <- as_tibble(DE14$interest_over_time)
+DE19IOT <- as_tibble(DE19$interest_over_time)
+
+DK14IOT <- as_tibble(DK14$interest_over_time)
+DK19IOT <- as_tibble(DK19$interest_over_time)
+
+EE14IOT <- as_tibble(EE14$interest_over_time)
+EE19IOT <- as_tibble(EE19$interest_over_time)
+
+ES14IOT <- as_tibble(ES14$interest_over_time)
+ES19IOT <- as_tibble(ES19$interest_over_time)
+
+FI14IOT <- as_tibble(FI14$interest_over_time)
+FI19IOT <- as_tibble(FI19$interest_over_time)
+
+FR14IOT <- as_tibble(FR14$interest_over_time)
+FR19IOT <- as_tibble(FR19$interest_over_time)
+
+GB14IOT <- as_tibble(GB14$interest_over_time)
+GB19IOT <- as_tibble(GB19$interest_over_time)
+
+HR14IOT <- as_tibble(HR14$interest_over_time)
+HR19IOT <- as_tibble(HR19$interest_over_time)
+
+HU14IOT <- as_tibble(HU14$interest_over_time)
+HU19IOT <- as_tibble(HU19$interest_over_time)
+
+IE14IOT <- as_tibble(IE14$interest_over_time)
+IE19IOT <- as_tibble(IE19$interest_over_time)
+
+IT14IOT <- as_tibble(IT14$interest_over_time)
+IT19IOT <- as_tibble(IT19$interest_over_time)
+
+LU14IOT <- as_tibble(LU14$interest_over_time)
+LU19IOT <- as_tibble(LU19$interest_over_time)
+
+LV14IOT <- as_tibble(LV14$interest_over_time)
+LV19IOT <- as_tibble(LV19$interest_over_time)
+
+NL14IOT <- as_tibble(NL14$interest_over_time)
+NL19IOT <- as_tibble(NL19$interest_over_time)
+
+PL14IOT <- as_tibble(PL14$interest_over_time)
+PL19IOT <- as_tibble(PL19$interest_over_time)
+
+PT14IOT <- as_tibble(PT14$interest_over_time)
+PT19IOT <- as_tibble(PT19$interest_over_time)
+
+RO14IOT <- as_tibble(RO14$interest_over_time)
+RO19IOT <- as_tibble(RO19$interest_over_time)
+
+SE14IOT <- as_tibble(SE14$interest_over_time)
+SE19IOT <- as_tibble(SE19$interest_over_time)
+
+SI14IOT <- as_tibble(SI14$interest_over_time)
+SI19IOT <- as_tibble(SI19$interest_over_time)
+
+SK14IOT <- as_tibble(SK14$interest_over_time)
+SK19IOT <- as_tibble(SK19$interest_over_time)
+```
+
+
+#With this done I will here try to merge the objects into one dataset
+
+
+```{r}
+GtestRigtig <- 
+  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+        SI14IOT, SI19IOT, SK14IOT, SK19IOT)
+```
+
+
+Her prøver vi med nyt approach fra toppen
+
+```{r}
+# Use regular expressions to separate on multiple characters:
+GtestRigtig %>% 
+  (x = c(NA, "a?b", "a.d", "b:c")) %>% 
+  separate(x, c("A","B"), sep = "([\\.\\?\\:])")
+
+GtestRigtig %>% 
+  separate(keyword, c("" "" "" " "))
+
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+)
+
+df <- data.frame(x = c(NA, "a.b", "a.d", "b.c"))
+df %>% separate(x, c("A", "B"))
+```
+
+
+
+```{r}
+GtestLAND <- 
+  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
+  spread(key = geo, value = hits)
+```
+
+
+```{r}
+GtestORD <- 
+  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
+  spread(key = keyword, value = hits)
+  
+```
+
+
+
+
+# Her prøver vi så at lave split-apply-combine
+
+
+HER SKER MAGIEN
+
+Efter at have lavet GtestRigtig
+
+```{r}
+GtestRigtig[, c(2)] <- sapply(GtestRigtig[, c(2)], as.numeric)
+GtestRigtig[is.na(GtestRigtig)] = 0
+
+```
+
+
+SÅ KAN VI PRØVE AT AGGREGERE
+
+```{r}
+library(magrittr)
+library(dplyr)
+```
+
+
+
+```{r}
+GtestJATAK <- GtestRigtig %>%
+  select(date, hits, keyword, geo, time) %>% 
+  group_by(keyword) %>% 
+  summarize(n())
+
+```
+
+
+
+```{r}
+GtestRigtig %>% 
+  group_by(keyword, geo) %>% 
+  select(hits) %>% 
+  summarise(m_hits = mean(hits, na.rm = T), med_hits = median(hits, na.rm = T), v_hits = var(hits, na.rm = T))
+```
+
+
+
+
+```{r}
+GtestRigtig %>% 
+  group_by(geo) %>% 
+  select(hits)  %>% 
+  summarise_each(funs(hits=sum(.,na.rm=TRUE),
+                      total=n(), 
+                      percent_cancelled=round(canceled/total*100,1)))
+```
+
+
+
+Hvad med en mere ikke ligetil vej:
+```{r}
+GtestSUM <- GtestORD %>%
+  transmute(GtestORD, ATw = "die europäische union" | "europawahl" | "europäisches parlament")
+
+```
+
+transmute(iris, sepal = Sepal.Length + Sepal. Width
+
+
+
+```{r}
+GtestLAND %>% 
+  summarise(total = sum(n))
+```
+
+
+OKay, her prøver jeg at køre aggregate combine
