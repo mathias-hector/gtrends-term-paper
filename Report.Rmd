@@ -20,6 +20,12 @@ library(gtrendsR)
 library(tidyverse)
 library(data.table)
 library(plyr)
+library(anytime)
+
+install.packages("tibbletime")
+library(tibbletime)
+library(lubridate)
+install.packages('fastDummies')
 ```
 
 ## Introduction
@@ -38,6 +44,7 @@ This section describes the data sources and the data gathering process.
 
 ```{r}
 # A code chunk that exemplifies the data gathering process
+
 ```
 
 ```{r, include = FALSE}

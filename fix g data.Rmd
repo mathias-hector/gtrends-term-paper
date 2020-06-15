@@ -1,8 +1,13 @@
+#CODEBOOK FOR FIXING CODES haha
+
+
 The main results are in gtrends_object$interest_over_time, which you can use to compute a single sum-of-interest variable for each country and election year. This could be achieved separately for each gtrends object (aggregate > combine), or you bind the interest_over_time datasets together and then aggregate by country (combine > aggregate).
 
 ```{r}
 AT14$interest_over_time
 ```
+
+#Making of new objects
 
 Here I try merging the interest over time 
 
@@ -79,6 +84,44 @@ SK19IOT <- as_tibble(SK19$interest_over_time)
 
 #With this done I will here try to merge the objects into one dataset
 
+Eksperiment ORD
+
+```{r}
+#Lav DF med keywords som variable
+
+#GtestORD <- 
+#  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+#        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+#        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+#       IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+#        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+#       SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
+#  spread(key = keyword, value = hits)
+
+
+##Ret typen af date-variablen og hvert keyword (FOR ORD)
+
+#GtestORD[, c(1)] <- sapply(GtestORD[, c(1)], as.Date.numeric)
+#GtestORD[, c(6:50)] <- sapply(GtestORD[, c(6:50)], as.numeric)
+
+```
+
+
+Eksperiment LAND
+
+```{r}
+#GtestLAND <- 
+#  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+#        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+#        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+#        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+#        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+#        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
+#  spread(key = geo, value = hits)
+```
+
+
+DEN RIGTIGE
 
 ```{r}
 GtestRigtig <- 
@@ -90,90 +133,330 @@ GtestRigtig <-
         SI14IOT, SI19IOT, SK14IOT, SK19IOT)
 ```
 
+# Fix the country data frame before rbind
 
-Her prøver vi med nyt approach fra toppen
+Maybe another option is to spread() each country data.frame before
+rbind() (and rename the new columns for consistency) - the issue might be that you have overlapping keywords, so you can't spread cleanly with the combined data. Actually, this is most likely the issue.
 
-```{r}
-# Use regular expressions to separate on multiple characters:
-GtestRigtig %>% 
-  (x = c(NA, "a?b", "a.d", "b:c")) %>% 
-  separate(x, c("A","B"), sep = "([\\.\\?\\:])")
-
-GtestRigtig %>% 
-  separate(keyword, c("" "" "" " "))
-
-  data,
-  col,
-  into,
-  sep = "[^[:alnum:]]+",
-  remove = TRUE,
-  convert = FALSE,
-  extra = "warn",
-  fill = "warn",
-  ...
-)
-
-df <- data.frame(x = c(NA, "a.b", "a.d", "b.c"))
-df %>% separate(x, c("A", "B"))
-```
-
-
+SPREAD PÅ ALLE GT OBJEKTER
 
 ```{r}
-GtestLAND <- 
-  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
-        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
-        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
-        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
-        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
-        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
-  spread(key = geo, value = hits)
-```
+#AT14IOT<- AT14IOT %>% 
+  #spread(key = keyword, value = hits)
+#AT19IOT <- AT19IOT %>% 
+  #spread(key = keyword, value = hits)
 
+#CZ14IOT <- CZ14IOT %>% 
+  #spread(key = keyword, value = hits)
+#CZ19IOT <- CZ19IOT %>% 
+  #spread(key = keyword, value = hits)
 
-```{r}
-GtestORD <- 
-  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
-        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
-        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
-        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
-        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
-        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
+#DE14IOT <- DE14IOT %>% 
+  #spread(key = keyword, value = hits)
+#DE19IOT <- DE19IOT %>% 
+  #spread(key = keyword, value = hits)
+
+DK14IOT <- DK14IOT %>% 
   spread(key = keyword, value = hits)
+DK19IOT <- DK19IOT %>% 
+  spread(key = keyword, value = hits)
+
+EE14IOT <- EE14IOT %>% 
+  spread(key = keyword, value = hits)
+EE19IOT <- EE19IOT %>% 
+  spread(key = keyword, value = hits)
+
+ES14IOT <- ES14IOT %>% 
+  spread(key = keyword, value = hits)
+ES19IOT <- ES19IOT %>% 
+  spread(key = keyword, value = hits)
+
+FI14IOT <- FI14IOT %>% 
+  spread(key = keyword, value = hits)
+FI19IOT <- FI19IOT %>% 
+  spread(key = keyword, value = hits)
+
+FR14IOT <- FR14IOT %>% 
+  spread(key = keyword, value = hits)
+FR19IOT <- FR19IOT %>% 
+  spread(key = keyword, value = hits)
+
+GB14IOT <- GB14IOT %>% 
+  spread(key = keyword, value = hits)
+GB19IOT <- GB19IOT %>% 
+  spread(key = keyword, value = hits)
+
+HR14IOT <- HR14IOT %>% 
+  spread(key = keyword, value = hits)
+HR19IOT <- HR19IOT %>% 
+  spread(key = keyword, value = hits)
+
+HU14IOT <- HU14IOT %>% 
+  spread(key = keyword, value = hits)
+HU19IOT <- HU19IOT %>% 
+  spread(key = keyword, value = hits)
+
+IE14IOT <- IE14IOT %>% 
+  spread(key = keyword, value = hits)
+IE19IOT <- IE19IOT %>% 
+  spread(key = keyword, value = hits)
+
+IT14IOT <- IT14IOT %>% 
+  spread(key = keyword, value = hits)
+IT19IOT <- IT19IOT %>% 
+  spread(key = keyword, value = hits)
+
+LU14IOT <- LU14IOT %>% 
+  spread(key = keyword, value = hits)
+LU19IOT <- LU19IOT %>% 
+  spread(key = keyword, value = hits)
+
+LV14IOT <- LV14IOT %>% 
+  spread(key = keyword, value = hits)
+LV19IOT <- LV19IOT %>% 
+  spread(key = keyword, value = hits)
+
+
+NL14IOT <- NL14IOT %>% 
+  spread(key = keyword, value = hits)
+NL19IOT <- NL19IOT %>% 
+  spread(key = keyword, value = hits)
+
+PL14IOT <- PL14IOT %>% 
+  spread(key = keyword, value = hits)
+PL19IOT <- PL19IOT %>% 
+  spread(key = keyword, value = hits)
+
+PT14IOT <- PT14IOT %>% 
+  spread(key = keyword, value = hits)
+PT19IOT <- PT19IOT %>% 
+  spread(key = keyword, value = hits)
+
+RO14IOT <- RO14IOT %>% 
+  spread(key = keyword, value = hits)
+RO19IOT <- RO19IOT %>% 
+  spread(key = keyword, value = hits)
+
+SE14IOT <- SE14IOT %>% 
+  spread(key = keyword, value = hits)
+SE19IOT <- SE19IOT %>% 
+  spread(key = keyword, value = hits)
+
+SI14IOT <- SI14IOT %>% 
+  spread(key = keyword, value = hits)
+SI19IOT <- SI19IOT %>% 
+  spread(key = keyword, value = hits)
+
+SK14IOT <- SK14IOT %>% 
+  spread(key = keyword, value = hits)
+SK19IOT <- SK19IOT %>% 
+  spread(key = keyword, value = hits)
+
+```
+
+
+Nu skal jeg så give nye navne til de spreadede kolonner. De er nødt til at have ens navne for, at det forbliver konsistent. 
+
+1. EU 2. Elec 3. EP
+
+```{r}
+#AT14IOT<- AT14IOT %>% 
+  #dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
+
+AT19IOT <- AT19IOT %>% 
+ dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
+
+CZ14IOT <- CZ14IOT %>% 
+ dplyr::rename(EU = 'evropská unie', Elec = 'volby do evropského parlamentu', EP = 'evropský parlament')
+
+CZ19IOT <- CZ19IOT %>% 
+ dplyr::rename(EU = 'evropská unie', Elec = 'volby do evropského parlamentu', EP = 'evropský parlament')
+
+DE14IOT <- DE14IOT %>% 
+ dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
+DE19IOT <- DE19IOT %>% 
+ dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
+
+DK14IOT <- DK14IOT %>% 
+ dplyr::rename(EU = 'den europæiske Union ', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
+DK19IOT <- DK19IOT %>% 
+  dplyr::rename(EU = 'den europæiske Union ', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
+
+EE14IOT <- EE14IOT %>% 
+ dplyr::rename(EU = 'euroopa Liit', Elec = 'euroopa parlamendi valimised', EP = 'evropský parlament')
+
+EE19IOT <- EE19IOT %>% 
+ dplyr::rename(EU = 'euroopa Liit', Elec = 'euroopa parlamendi valimised', EP = 'evropský parlament')
+
+ES14IOT <- ES14IOT %>% 
+ dplyr::rename(EU = 'la unión europea', Elec = 'elecciones al parlamento europeo', EP = 'parlamento europeo')
+ES19IOT <- ES19IOT %>% 
+ dplyr::rename(EU = 'la unión europea', Elec = 'elecciones al parlamento europeo', EP = 'parlamento europeo')
+
+FI14IOT <- FI14IOT %>% 
+ dplyr::rename(EU = 'euroopan unioni', Elec = 'europarlamenttivaalit', EP = 'euroopan parlamentti')
+FI19IOT <- FI19IOT %>% 
+ dplyr::rename(EU = 'euroopan unioni', Elec = 'europarlamenttivaalit', EP = 'euroopan parlamentti')
+
+FR14IOT <- FR14IOT %>% 
+ dplyr::rename(EU = 'l’union européenne', Elec = 'élections européennes', EP = 'parlement européen')
+FR19IOT <- FR19IOT %>% 
+ dplyr::rename(EU = 'l’union européenne', Elec = 'élections européennes', EP = 'parlement européen')
+
+		
+GB14IOT <- GB14IOT %>% 
+ dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
+GB19IOT <- GB19IOT %>% 
+ dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
+
+HR14IOT <- HR14IOT %>% 
+ dplyr::rename(EU = 'europska unija', Elec = 'izbori za evropski parlament', EP = 'europski parlament')
+HR19IOT <- HR19IOT %>% 
+ dplyr::rename(EU = 'europska unija', Elec = 'izbori za evropski parlament', EP = 'europski parlament')
+
+HU14IOT <- HU14IOT %>% 
+ dplyr::rename(EU = 'az Európai Unió', Elec = 'európai parlamenti választás', EP = 'európai Parlament')
+HU19IOT <- HU19IOT %>% 
+ dplyr::rename(EU = 'az Európai Unió', Elec = 'európai parlamenti választás', EP = 'európai Parlament')
+
+IE14IOT <- IE14IOT %>% 
+ dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
+IE19IOT <- IE19IOT %>% 
+ dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
+
+IT14IOT <- IT14IOT %>% 
+ dplyr::rename(EU = 'l’unione europea', Elec = 'elezioni europee', EP = 'parlamento europeo')
+IT19IOT <- IT19IOT %>% 
+ dplyr::rename(EU = 'l’unione europea', Elec = 'elezioni europee', EP = 'parlamento europeo')
+
+LU14IOT <- LU14IOT %>% 
+ dplyr::rename(EU = 'l’union européenne', Elec = 'élections européennes', EP = 'parlement européen')
+LU19IOT <- LU19IOT %>% 
+ dplyr::rename(EU = 'l’union européenne', Elec = 'élections européennes', EP = 'parlement européen')
+
+LV14IOT <- LV14IOT %>% 
+ dplyr::rename(EU = 'eiropas savienība', Elec = 'eiropas parlamenta vēlēšanas', EP = 'eiropas parlaments')
+LV19IOT <- LV19IOT %>% 
+ dplyr::rename(EU = 'eiropas savienība', Elec = 'eiropas parlamenta vēlēšanas', EP = 'eiropas parlaments')
+
+NL14IOT <- NL14IOT %>% 
+ dplyr::rename(EU = 'de europese unie', Elec = 'europese parlementsverkiezingen', EP = 'europees parlement')
+NL19IOT <- NL19IOT %>% 
+ dplyr::rename(EU = 'de europese unie', Elec = 'europese parlementsverkiezingen', EP = 'europees parlement')
+
+PL14IOT <- PL14IOT %>% 
+ dplyr::rename(EU = 'unia europejska', Elec = 'wybory do parlamentu europejskiego', EP = 'parlament europejski')
+PL19IOT <- PL19IOT %>% 
+ dplyr::rename(EU = 'unia europejska', Elec = 'wybory do parlamentu europejskiego', EP = 'parlament europejski')
+
+PT14IOT <- PT14IOT %>% 
+ dplyr::rename(EU = 'a união europeia', Elec = 'eleições parlamentares europeias', EP = 'parlamento europeu')
+PT19IOT <- PT19IOT %>% 
+ dplyr::rename(EU = 'a união europeia', Elec = 'eleições parlamentares europeias', EP = 'parlamento europeu')
+ 	
+RO14IOT <- RO14IOT %>% 
+ dplyr::rename(EU = 'uniunea europeană', Elec = 'alegeri pentru parlamentul european', EP = 'parlamentul european')
+RO19IOT <- RO19IOT %>% 
+ dplyr::rename(EU = 'uniunea europeană', Elec = 'alegeri pentru parlamentul european', EP = 'parlamentul european')
+
+SE14IOT <- SE14IOT %>% 
+ dplyr::rename(EU = 'europeiska unionen', Elec = 'europaparlamentsvalet', EP = 'europaparlamentet')
+SE19IOT <- SE19IOT %>% 
+ dplyr::rename(EU = 'europeiska unionen', Elec = 'europaparlamentsvalet', EP = 'europaparlamentet')
+
+SI14IOT <- SI14IOT %>% 
+ dplyr::rename(EU = 'evropska unija', Elec = 'volitve v evropski parlament', EP = 'evropski parlament')
+SI19IOT <- SI19IOT %>% 
+ dplyr::rename(EU = 'evropska unija', Elec = 'volitve v evropski parlament', EP = 'evropski parlament')
+
+SK14IOT <- SK14IOT %>% 
+ dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'Európsky parlament')
+SK19IOT <- SK19IOT %>% 
+ dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'Európsky parlament')
+```
+
+# NU SKAL DER KOMBINERES
+
+```{r}
+GTperf <- 
+  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
+        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
+        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
+        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
+        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
+        SI14IOT, SI19IOT, SK14IOT, SK19IOT)
+```
+
+
+## First I prep the GT DATASET
+
+Run these two twice if need be - transforms hits per keyword to numeric
+
+```{r}
+GTperf[, c(6:8)] <- sapply(GTperf[, c(6:8)], as.numeric) #transforms hits per keyword to numeric
+GTperf[is.na(GTperf)] = 0 # transforms newly made NA's to zero - NB diskuter måske
+```
+
+Here the date variabel is changed to date format + a check of this
+
+Also I try to compute a 2014 variable and 2019 variable from date
+
+A dummy will be made with this
+
+Will probably be needed if i am to group by year
+
+
+```{r}
+year(date(as.POSIXct("2014-04-25", format = "%Y-%m-%d")))
+year(date(as.POSIXct("2019-04-26", format = "%Y-%m-%d")))
+
+GTperf <- GTperf %>%
+  mutate(year = year(date)) 
   
+GTperf <- 
+  dummy_cols(GTperf, select_columns = "year", remove_first_dummy = TRUE)
+
+```
+
+
+##SÅ KAN VI PRØVE AT AGGREGERE // split-apply-combine?
+
+Nu burde jeg kunne køre en rowsum per country og year
+
+
+
+```{r}
+
 ```
 
 
 
 
-# Her prøver vi så at lave split-apply-combine
-
-
-HER SKER MAGIEN
-
-Efter at have lavet GtestRigtig
 
 ```{r}
-GtestRigtig[, c(2)] <- sapply(GtestRigtig[, c(2)], as.numeric)
-GtestRigtig[is.na(GtestRigtig)] = 0
+
+```
+
+```{r}
 
 ```
 
 
-SÅ KAN VI PRØVE AT AGGREGERE
 
-```{r}
-library(magrittr)
-library(dplyr)
+
+```{r} 
+GTny <- GTny %>%
+  mutate()
+
+(mutate(newvar = var1 + var2 + var3)).
+
+#(mutate(newvar = var1 + var2 + var3)).
+#rowsum(x, group, reorder = TRUE, na.rm = FALSE, …)
 ```
 
 
 
 ```{r}
-GtestJATAK <- GtestRigtig %>%
-  select(date, hits, keyword, geo, time) %>% 
-  group_by(keyword) %>% 
-  summarize(n())
 
 ```
 
@@ -189,32 +472,12 @@ GtestRigtig %>%
 
 
 
-```{r}
-GtestRigtig %>% 
-  group_by(geo) %>% 
-  select(hits)  %>% 
-  summarise_each(funs(hits=sum(.,na.rm=TRUE),
-                      total=n(), 
-                      percent_cancelled=round(canceled/total*100,1)))
-```
-
-
-
-Hvad med en mere ikke ligetil vej:
-```{r}
-GtestSUM <- GtestORD %>%
-  transmute(GtestORD, ATw = "die europäische union" | "europawahl" | "europäisches parlament")
-
-```
-
-transmute(iris, sepal = Sepal.Length + Sepal. Width
 
 
 
 ```{r}
-GtestLAND %>% 
-  summarise(total = sum(n))
+
 ```
 
 
-OKay, her prøver jeg at køre aggregate combine
+
