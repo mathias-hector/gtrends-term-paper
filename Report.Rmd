@@ -16,16 +16,15 @@ references:
 # Her indgår de pakker, som skal loades for at man kan lave sin analyse
 # include = FALSE betyder, at denne code chunk ikke indgår i PDF-outputtet
 
+#install.packages("tibbletime")
+#install.packages('fastDummies')
 library(gtrendsR)
 library(tidyverse)
 library(data.table)
-library(plyr)
 library(anytime)
-
-install.packages("tibbletime")
 library(tibbletime)
+library(fastDummies)
 library(lubridate)
-install.packages('fastDummies')
 ```
 
 ## Introduction

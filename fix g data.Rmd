@@ -141,20 +141,20 @@ rbind() (and rename the new columns for consistency) - the issue might be that y
 SPREAD PÅ ALLE GT OBJEKTER
 
 ```{r}
-#AT14IOT<- AT14IOT %>% 
-  #spread(key = keyword, value = hits)
-#AT19IOT <- AT19IOT %>% 
-  #spread(key = keyword, value = hits)
+AT14IOT<- AT14IOT %>% 
+  spread(key = keyword, value = hits)
+AT19IOT <- AT19IOT %>% 
+  spread(key = keyword, value = hits)
 
-#CZ14IOT <- CZ14IOT %>% 
-  #spread(key = keyword, value = hits)
-#CZ19IOT <- CZ19IOT %>% 
-  #spread(key = keyword, value = hits)
+CZ14IOT <- CZ14IOT %>% 
+  spread(key = keyword, value = hits)
+CZ19IOT <- CZ19IOT %>% 
+  spread(key = keyword, value = hits)
 
-#DE14IOT <- DE14IOT %>% 
-  #spread(key = keyword, value = hits)
-#DE19IOT <- DE19IOT %>% 
-  #spread(key = keyword, value = hits)
+DE14IOT <- DE14IOT %>% 
+  spread(key = keyword, value = hits)
+DE19IOT <- DE19IOT %>% 
+  spread(key = keyword, value = hits)
 
 DK14IOT <- DK14IOT %>% 
   spread(key = keyword, value = hits)
@@ -216,7 +216,6 @@ LV14IOT <- LV14IOT %>%
 LV19IOT <- LV19IOT %>% 
   spread(key = keyword, value = hits)
 
-
 NL14IOT <- NL14IOT %>% 
   spread(key = keyword, value = hits)
 NL19IOT <- NL19IOT %>% 
@@ -260,15 +259,13 @@ Nu skal jeg så give nye navne til de spreadede kolonner. De er nødt til at hav
 1. EU 2. Elec 3. EP
 
 ```{r}
-#AT14IOT<- AT14IOT %>% 
-  #dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
-
+AT14IOT<- AT14IOT %>% 
+  dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
 AT19IOT <- AT19IOT %>% 
  dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
 
 CZ14IOT <- CZ14IOT %>% 
  dplyr::rename(EU = 'evropská unie', Elec = 'volby do evropského parlamentu', EP = 'evropský parlament')
-
 CZ19IOT <- CZ19IOT %>% 
  dplyr::rename(EU = 'evropská unie', Elec = 'volby do evropského parlamentu', EP = 'evropský parlament')
 
@@ -278,15 +275,14 @@ DE19IOT <- DE19IOT %>%
  dplyr::rename(EU = 'die europäische union', Elec = europawahl, EP = 'europäisches parlament')
 
 DK14IOT <- DK14IOT %>% 
- dplyr::rename(EU = 'den europæiske Union ', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
+ dplyr::rename(EU = 'den europæiske union', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
 DK19IOT <- DK19IOT %>% 
-  dplyr::rename(EU = 'den europæiske Union ', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
+  dplyr::rename(EU = 'den europæiske union', Elec = 'europa-parlamentsvalget', EP = 'europa-parlamentet')
 
 EE14IOT <- EE14IOT %>% 
- dplyr::rename(EU = 'euroopa Liit', Elec = 'euroopa parlamendi valimised', EP = 'evropský parlament')
-
+ dplyr::rename(EU = 'euroopa liit', Elec = 'euroopa parlamendi valimised', EP = 'euroopa parlament')
 EE19IOT <- EE19IOT %>% 
- dplyr::rename(EU = 'euroopa Liit', Elec = 'euroopa parlamendi valimised', EP = 'evropský parlament')
+ dplyr::rename(EU = 'euroopa liit', Elec = 'euroopa parlamendi valimised', EP = 'euroopa parlament')
 
 ES14IOT <- ES14IOT %>% 
  dplyr::rename(EU = 'la unión europea', Elec = 'elecciones al parlamento europeo', EP = 'parlamento europeo')
@@ -303,7 +299,6 @@ FR14IOT <- FR14IOT %>%
 FR19IOT <- FR19IOT %>% 
  dplyr::rename(EU = 'l’union européenne', Elec = 'élections européennes', EP = 'parlement européen')
 
-		
 GB14IOT <- GB14IOT %>% 
  dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
 GB19IOT <- GB19IOT %>% 
@@ -315,9 +310,9 @@ HR19IOT <- HR19IOT %>%
  dplyr::rename(EU = 'europska unija', Elec = 'izbori za evropski parlament', EP = 'europski parlament')
 
 HU14IOT <- HU14IOT %>% 
- dplyr::rename(EU = 'az Európai Unió', Elec = 'európai parlamenti választás', EP = 'európai Parlament')
+ dplyr::rename(EU = 'az európai unió', Elec = 'európai parlamenti választás', EP = 'európai parlament')
 HU19IOT <- HU19IOT %>% 
- dplyr::rename(EU = 'az Európai Unió', Elec = 'európai parlamenti választás', EP = 'európai Parlament')
+ dplyr::rename(EU = 'az európai unió', Elec = 'európai parlamenti választás', EP = 'európai parlament')
 
 IE14IOT <- IE14IOT %>% 
  dplyr::rename(EU = 'the european union', Elec = 'european parliament election', EP = 'european parliament')
@@ -370,9 +365,9 @@ SI19IOT <- SI19IOT %>%
  dplyr::rename(EU = 'evropska unija', Elec = 'volitve v evropski parlament', EP = 'evropski parlament')
 
 SK14IOT <- SK14IOT %>% 
- dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'Európsky parlament')
+ dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'európsky parlament')
 SK19IOT <- SK19IOT %>% 
- dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'Európsky parlament')
+ dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'európsky parlament')
 ```
 
 # NU SKAL DER KOMBINERES
@@ -421,36 +416,39 @@ GTperf <-
 
 ##SÅ KAN VI PRØVE AT AGGREGERE // split-apply-combine?
 
-Nu burde jeg kunne køre en rowsum per country og year
+Summarization of the keyword data per country and year 
 
-
-Først prøver vi at lave summeret dataset - det er nice at have.
 ```{r}
 GTsum <- GTperf %>%
-  select(geo, year, year_2019, EU, Elec, EP) %>% 
-  group_by(geo) %>%
-    summarise(                        #evt. med dplyr::summarise ellers plyr::summarise 
-      mean_EU = mean(EU), median_EU = median(EU), variance_EU = var(EU),total = sum(EU),
-      mean_EP = mean(EP), median_EP = median(EP), variance_EP = var(EP),total = sum(EP),
-      mean_Elec = mean(Elec), median_Elec = median(Elec), variance_Elec = var(Elec), 
-      total = sum(Elec)) %>% 
+  select(geo, year, year_2019, EU, Elec, EP) %>%
+  group_by(geo, year) %>%
+  dplyr::summarise(
+    mean_EU = mean(EU), median_EU = median(EU), variance_EU = var(EU), total_EU = sum(EU),
+    mean_EP = mean(EP), median_EP = median(EP), variance_EP = var(EP), total_EP = sum(EP),
+    mean_Elec = mean(Elec), median_Elec = median(Elec), variance_Elec = var(Elec), 
+    total_Elec = sum(Elec)) %>%
   arrange(desc('year_2019'))
-  
 
-#summarise(m_hits = mean(total_hits, na.rm = T), v_hits = var(total_hits, na.rm = T))
-  
+glimpse(GTsum)
+
 
 ```
-GtestRigtig %>% 
-  group_by(keyword, geo) %>% 
-  select(hits) %>% 
-  
 
+# Quick data exploration
 
-
+KIG PÅ DET HER SENERE
 
 ```{r}
+GTviz <- GTsum %>%
+  select(geo, year, total_EU, total_Elec, total_EP) %>%
+  group_by(geo, year) %>%
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = total_Elec)) +
+  geom_line(aes(y = total_EP)) +
+  geom_line(aes(y = total_EU)) +
+  facet_wrap(~ geo)
 
+plot(GTviz)
 ```
 
 ```{r}
