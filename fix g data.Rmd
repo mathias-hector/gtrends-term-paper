@@ -424,11 +424,27 @@ GTperf <-
 Nu burde jeg kunne køre en rowsum per country og year
 
 
-
+Først prøver vi at lave summeret dataset - det er nice at have.
 ```{r}
+GTsum <- GTperf %>%
+  select(geo, year, year_2019, EU, Elec, EP) %>% 
+  group_by(geo) %>%
+    summarise(                        #evt. med dplyr::summarise ellers plyr::summarise 
+      mean_EU = mean(EU), median_EU = median(EU), variance_EU = var(EU),total = sum(EU),
+      mean_EP = mean(EP), median_EP = median(EP), variance_EP = var(EP),total = sum(EP),
+      mean_Elec = mean(Elec), median_Elec = median(Elec), variance_Elec = var(Elec), 
+      total = sum(Elec)) %>% 
+  arrange(desc('year_2019'))
+  
+
+#summarise(m_hits = mean(total_hits, na.rm = T), v_hits = var(total_hits, na.rm = T))
+  
 
 ```
-
+GtestRigtig %>% 
+  group_by(keyword, geo) %>% 
+  select(hits) %>% 
+  
 
 
 
@@ -445,28 +461,19 @@ Nu burde jeg kunne køre en rowsum per country og year
 
 
 ```{r} 
-GTny <- GTny %>%
-  mutate()
-
-(mutate(newvar = var1 + var2 + var3)).
-
-#(mutate(newvar = var1 + var2 + var3)).
-#rowsum(x, group, reorder = TRUE, na.rm = FALSE, …)
-```
-
-
-
-```{r}
 
 ```
 
 
 
 ```{r}
-GtestRigtig %>% 
-  group_by(keyword, geo) %>% 
-  select(hits) %>% 
-  summarise(m_hits = mean(hits, na.rm = T), med_hits = median(hits, na.rm = T), v_hits = var(hits, na.rm = T))
+
+```
+
+
+
+```{r}
+
 ```
 
 
