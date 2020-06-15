@@ -3,21 +3,14 @@ title: "Predicting Voter Turnout with Google Trends"
 subtitle: "Fundamentals of Computing and Data Display - Term Paper"
 author: "Mathias Hector Schram"
 date: "`r Sys.Date()`"
-output: 
-   pdf_document:
-     toc: yes
-     df_print: kable
-references:
-  #GENERELT: SE paper-template fil - jeg tror, at JabRef eller Zotero skal bruges
-  
+output: pdf_document
 ---
 
 ```{r, include = FALSE}
 # Her indgår de pakker, som skal loades for at man kan lave sin analyse
 # include = FALSE betyder, at denne code chunk ikke indgår i PDF-outputtet
 
-#install.packages("tibbletime")
-#install.packages('fastDummies')
+
 library(gtrendsR)
 library(tidyverse)
 library(data.table)
@@ -26,79 +19,55 @@ library(tibbletime)
 library(fastDummies)
 library(lubridate)
 library(scales)
-
-#install.packages("mudata2")
 library(mudata2)
-
-#install.packages("broom")
-#install.packages("modelr")
-library(broom)
-library(modelr)
-
 library(lme4)
-
-#install.packages("groupedstats")
-library(groupedstats)
-
 ```
 
 ## Introduction
 
-This section outlines the research idea. We can also cite related work here [@Wickham2014; @Baumer2017].
+Since the first election for the European Parliament in 1979 voter turnout has been steadily declining. From 61.9 percent in the first election of 1979 to 42.6 percent in the election of 2014. However in the most recent European Parliament election voter turnout spiked with an increase to 50.6 percent. Why this was has to some extent already been answered by the EU itself: 2019 saw an increase amongst younger voters, and the environmental and economic situation as well contributed a great deal to that development^[https://www.europarl.europa.eu/news/en/press-room/20190923IPR61602/2019-european-elections-record-turnout-driven-by-young-people].
 
-Note that compiled term paper (the PDF) is supposed to be more text-centered than the RMarkdown documents we used in class, i.e. the text sections are more detailed and big or redundant code chunks can be hidden.
+Since the 'why' has seemingly already been answered, this paper takes a step back and asks another question: Could we have predicted the surge in Voter Turnout? In this age of big data, Google Trends data  have been used to predict who would vote in the US for the 2008 and 2010 primaries [@Stephens-Davidowitz2013].  In this paper same fundamental thought is explored upon in an european context. Specifically the research question adressed in this paper is as follows:
 
-LIGELEDES er det nice, at huske på, at selve paper-template bliver til en PDF på knap 1,5 sider - det er LUKSUS, da den afleverede rapport skal være 5-10 sider (og som enkelt person, må jeg godt være tættere på 5 end 10)
+Can Google Trends be used as a predictor for voter turnout?
 
-HUSK også at inkludere et link til GitHub - det kan passende være i introduktionen.
+To access and run this analysis, go to the GitHub repository, follow the hyperlink in the footnote^[https://github.com/mathias-hector/gtrends-term-paper].
 
 ## Data
 
-This section describes the data sources and the data gathering process.
+The data used for this term paper comes from two different sources. First of all is the voter turnout data, which is downloaded from the International Institute for Democracy and Electoral Assistance (IDEA)^[https://www.idea.int/]. Second of all is the data from Google Trends that includes three keywords related to the election of the European Parliament (see codebook). 
 
-```{r}
-# A code chunk that exemplifies the data gathering process
+Below is an example of an import of Google Trends data: 
+
+
+```{r echo=TRUE}
+library(gtrendsR)
+
+#Austria
+AT14 <- gtrends(c("die europäische union", "europawahl", "europäisches parlament"), geo = "AT", time = "2014-04-25 2014-05-25", low_search_volume =T)
+AT19 <- gtrends(c("die europäische union", "europawahl", "europäisches parlament"), geo = "AT", time = "2019-04-26 2019-05-26", low_search_volume =T)
 
 ```
 
-```{r, include = FALSE}
-# Additional code chunks that repeat tasks or do basic things can be hidden
+### Analysis and Discussion
+
+With the research question in mind this section presents and discusses the main findings of the analysis. As is evident by the codebook, the main part of the data work has consisted of preparing the data in numerous ways for the final model. 
+
+The final model is a multiple linear regression, which is computed from the code below: 
+
+```{r echo=TRUE}
+m1 <- lm(Voter_Turnout ~ total_EP + total_EU + total_Elec + mean_EP +  mean_EU +  mean_Elec + median_EP + median_EU + median_Elec + variance_EP + variance_EU + variance_Elec + Country + year_2019 , data = VotesTrends)
+summary(m1)
 ```
 
-## Results
+From the model we gain a number of insights. With a Multiple R-squared of 0.8909, as well as a p-value that is < 0.0001, this first of all indicates that the model explains 89 percent of all the variability of the response data around its mean. Moreover it, the p-value, indicates what would normally be a rejection of the null-hypothesis. Therefore the overall conclusion of the term paper is that Google Trends can in fact be used as a predictor of voter turnout - at the very least for European Parliament elections. However we have to note a 
 
-This section presents the main results.
-
-### Data exploration
-
-The results section may have a data exploration part, but in general the structure here depends on the specific project.
-
-```{r}
-# What happens here depends on the specific project
-```
-
-```{r}
-# What happens here depends on the specific project
-```
-
-### Analysis
-
-This section presents the main results, such as (for example) stats and graphs that show relationships, model results and/or clustering, PCA, etc.
-
-```{r}
-# What happens here depends on the specific project
-```
-
-```{r}
-# What happens here depends on the specific project
-```
-
-```{r}
-# What happens here depends on the specific project
-```
 
 ## Discussion
 
-This section summarizes the results and may briefly outline advantages and limitations of the work presented.
+As shown in the analysis there is INDSÆT RESULTAT. This is in of itself a clear indicator that the idea of treating Google data as proxy for inention of voting is indeed valid.  
+
 
 ## References
+
+Stephens-Davidowitz, Seth I., Using Google Data to Predict Who Will Vote (March 24, 2013). Available at SSRN: https://ssrn.com/abstract=2238863 or http://dx.doi.org/10.2139/ssrn.2238863

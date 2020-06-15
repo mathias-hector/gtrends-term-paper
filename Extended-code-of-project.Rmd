@@ -1,5 +1,6 @@
 ---
-output: pdf_document
+output:
+  pdf_document: default
 ---
 #Required packages
 
@@ -14,8 +15,6 @@ library(lubridate)
 library(scales)
 library(mudata2)
 library(lme4)
-library(knitr)
-library(tinytex)
 ```
 
 
