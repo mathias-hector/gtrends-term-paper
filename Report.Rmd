@@ -55,7 +55,7 @@ With the research question in mind this section presents and discusses the main 
 
 The final model is a multiple linear regression, which is computed from the code below: 
 
-```{r echo=TRUE}
+```{r echo=FALSE}
 m1 <- lm(Voter_Turnout ~ total_EP + total_EU + total_Elec + mean_EP +  mean_EU +  mean_Elec + median_EP + median_EU + median_Elec + variance_EP + variance_EU + variance_Elec + Country + year_2019 , data = VotesTrends)
 summary(m1)
 ```
