@@ -25,6 +25,21 @@ library(anytime)
 library(tibbletime)
 library(fastDummies)
 library(lubridate)
+library(scales)
+
+#install.packages("mudata2")
+library(mudata2)
+
+#install.packages("broom")
+#install.packages("modelr")
+library(broom)
+library(modelr)
+
+library(lme4)
+
+#install.packages("groupedstats")
+library(groupedstats)
+
 ```
 
 ## Introduction

@@ -1,145 +1,35 @@
 #CODEBOOK FOR FIXING CODES haha
 
+This codebook can be run after running the R Script "Import of voter turnout data.R"
+NB You need to download the IDEA data first and set working directory  
 
-The main results are in gtrends_object$interest_over_time, which you can use to compute a single sum-of-interest variable for each country and election year. This could be achieved separately for each gtrends object (aggregate > combine), or you bind the interest_over_time datasets together and then aggregate by country (combine > aggregate).
+#VoterData preparation
 
+Import and wrangling
 ```{r}
-AT14$interest_over_time
-```
+library(readxl)
+VoterDat<- read_excel("Voter turnout data/idea_export_40_5edfe09b20bc6.xls")
 
-#Making of new objects
 
-Here I try merging the interest over time 
-
-First I need to make new objects only containg Interest over time (IOT)
-
-```{r}
-AT14IOT <- as_tibble(AT14$interest_over_time)
-AT19IOT <- as_tibble(AT19$interest_over_time)
-
-CZ14IOT <- as_tibble(CZ14$interest_over_time)
-CZ19IOT <- as_tibble(CZ19$interest_over_time)
-
-DE14IOT <- as_tibble(DE14$interest_over_time)
-DE19IOT <- as_tibble(DE19$interest_over_time)
-
-DK14IOT <- as_tibble(DK14$interest_over_time)
-DK19IOT <- as_tibble(DK19$interest_over_time)
-
-EE14IOT <- as_tibble(EE14$interest_over_time)
-EE19IOT <- as_tibble(EE19$interest_over_time)
-
-ES14IOT <- as_tibble(ES14$interest_over_time)
-ES19IOT <- as_tibble(ES19$interest_over_time)
-
-FI14IOT <- as_tibble(FI14$interest_over_time)
-FI19IOT <- as_tibble(FI19$interest_over_time)
-
-FR14IOT <- as_tibble(FR14$interest_over_time)
-FR19IOT <- as_tibble(FR19$interest_over_time)
-
-GB14IOT <- as_tibble(GB14$interest_over_time)
-GB19IOT <- as_tibble(GB19$interest_over_time)
-
-HR14IOT <- as_tibble(HR14$interest_over_time)
-HR19IOT <- as_tibble(HR19$interest_over_time)
-
-HU14IOT <- as_tibble(HU14$interest_over_time)
-HU19IOT <- as_tibble(HU19$interest_over_time)
-
-IE14IOT <- as_tibble(IE14$interest_over_time)
-IE19IOT <- as_tibble(IE19$interest_over_time)
-
-IT14IOT <- as_tibble(IT14$interest_over_time)
-IT19IOT <- as_tibble(IT19$interest_over_time)
-
-LU14IOT <- as_tibble(LU14$interest_over_time)
-LU19IOT <- as_tibble(LU19$interest_over_time)
-
-LV14IOT <- as_tibble(LV14$interest_over_time)
-LV19IOT <- as_tibble(LV19$interest_over_time)
-
-NL14IOT <- as_tibble(NL14$interest_over_time)
-NL19IOT <- as_tibble(NL19$interest_over_time)
-
-PL14IOT <- as_tibble(PL14$interest_over_time)
-PL19IOT <- as_tibble(PL19$interest_over_time)
-
-PT14IOT <- as_tibble(PT14$interest_over_time)
-PT19IOT <- as_tibble(PT19$interest_over_time)
-
-RO14IOT <- as_tibble(RO14$interest_over_time)
-RO19IOT <- as_tibble(RO19$interest_over_time)
-
-SE14IOT <- as_tibble(SE14$interest_over_time)
-SE19IOT <- as_tibble(SE19$interest_over_time)
-
-SI14IOT <- as_tibble(SI14$interest_over_time)
-SI19IOT <- as_tibble(SI19$interest_over_time)
-
-SK14IOT <- as_tibble(SK14$interest_over_time)
-SK19IOT <- as_tibble(SK19$interest_over_time)
+#Remove all observations that are not from 2014 and 2019 as well as unecessesary variables (columns)
+VoterDat1419 <- VoterDat %>% 
+  filter(Year > 2013) %>% 
+  select(Country, Year, `Voter Turnout`, `Total vote`, Population)
 ```
 
 
-#With this done I will here try to merge the objects into one dataset
+Transforming three columns to numeric
+```{r} 
 
-Eksperiment ORD
-
-```{r}
-#Lav DF med keywords som variable
-
-#GtestORD <- 
-#  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
-#        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
-#        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
-#       IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
-#        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
-#       SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
-#  spread(key = keyword, value = hits)
-
-
-##Ret typen af date-variablen og hvert keyword (FOR ORD)
-
-#GtestORD[, c(1)] <- sapply(GtestORD[, c(1)], as.Date.numeric)
-#GtestORD[, c(6:50)] <- sapply(GtestORD[, c(6:50)], as.numeric)
+VoterDat1419$Population <- as.numeric(gsub(",","",VoterDat1419$Population))
+VoterDat1419$'Total vote' <- as.numeric(gsub(",","",VoterDat1419$'Total vote'))
+VoterDat1419$`Voter Turnout` <- as.numeric(gsub("%", "", VoterDat1419$`Voter Turnout`))
 
 ```
 
+#Gtrends data preparation and merging
 
-Eksperiment LAND
-
-```{r}
-#GtestLAND <- 
-#  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
-#        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
-#        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
-#        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
-#        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
-#        SI14IOT, SI19IOT, SK14IOT, SK19IOT) %>% 
-#  spread(key = geo, value = hits)
-```
-
-
-DEN RIGTIGE
-
-```{r}
-GtestRigtig <- 
-  rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
-        EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
-        GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
-        IT14IOT, IT19IOT, LU14IOT, LU19IOT, LV14IOT, LV19IOT, NL14IOT, NL19IOT,
-        PL14IOT, PL19IOT, PT14IOT, PT19IOT, RO14IOT, RO19IOT, SE14IOT, SE19IOT, 
-        SI14IOT, SI19IOT, SK14IOT, SK19IOT)
-```
-
-# Fix the country data frame before rbind
-
-Maybe another option is to spread() each country data.frame before
-rbind() (and rename the new columns for consistency) - the issue might be that you have overlapping keywords, so you can't spread cleanly with the combined data. Actually, this is most likely the issue.
-
-SPREAD PÅ ALLE GT OBJEKTER
-
+Spread the three keywords for each IOT-object (created in R Script "Import of voter turnout)
 ```{r}
 AT14IOT<- AT14IOT %>% 
   spread(key = keyword, value = hits)
@@ -253,10 +143,13 @@ SK19IOT <- SK19IOT %>%
 
 ```
 
+For consistency all unique keywords are renamed each IOT-object. 
+This makes it possible to meaningfully combine the IOT-objects afterwards  
 
-Nu skal jeg så give nye navne til de spreadede kolonner. De er nødt til at have ens navne for, at det forbliver konsistent. 
-
-1. EU 2. Elec 3. EP
+The new keyword names are as follows:
+[1] "EU" #the european union 
+[2] "Elec" #european parliament election
+[3] "EP" #the european parliament
 
 ```{r}
 AT14IOT<- AT14IOT %>% 
@@ -370,10 +263,10 @@ SK19IOT <- SK19IOT %>%
  dplyr::rename(EU = 'európska únia', Elec = 'voľby do európskeho parlamentu', EP = 'európsky parlament')
 ```
 
-# NU SKAL DER KOMBINERES
+Merge IOT-objects into one dataset (GT) with rbind()
 
 ```{r}
-GTperf <- 
+GT <- 
   rbind(AT14IOT, AT19IOT, CZ14IOT, CZ19IOT, DE14IOT, DE19IOT, DK14IOT, DK19IOT, 
         EE14IOT, EE19IOT, ES14IOT, ES19IOT, FI14IOT, FI19IOT, FR14IOT, FR19IOT, 
         GB14IOT, GB19IOT, HR14IOT, HR19IOT, HU14IOT, HU19IOT, IE14IOT, IE19IOT, 
@@ -383,106 +276,135 @@ GTperf <-
 ```
 
 
-## First I prep the GT DATASET
+#Preparation of new gtrends dataset
 
-Run these two twice if need be - transforms hits per keyword to numeric
+Transform Keyword variables to numeric, which will create NA's
 
 ```{r}
-GTperf[, c(6:8)] <- sapply(GTperf[, c(6:8)], as.numeric) #transforms hits per keyword to numeric
-GTperf[is.na(GTperf)] = 0 # transforms newly made NA's to zero - NB diskuter måske
+GT[, c(6:8)] <- sapply(GT[, c(6:8)], as.numeric) #transforms hits per keyword to numeric
 ```
 
-Here the date variabel is changed to date format + a check of this
+Changing any new NA's to 0
 
-Also I try to compute a 2014 variable and 2019 variable from date
+```{r}
+GT[is.na(GT)] = 0 
+```
 
-A dummy will be made with this
+Two main things happen here:
+ - The date variable is changed to date format
+ - A dummy variable [0 = 2014, 1 = 2019] is computed  
 
-Will probably be needed if i am to group by year
-
+The dummy is meant for later regression
 
 ```{r}
 year(date(as.POSIXct("2014-04-25", format = "%Y-%m-%d")))
 year(date(as.POSIXct("2019-04-26", format = "%Y-%m-%d")))
 
-GTperf <- GTperf %>%
+GT <- GT %>%
   mutate(year = year(date)) 
   
-GTperf <- 
-  dummy_cols(GTperf, select_columns = "year", remove_first_dummy = TRUE)
-
+GT <- 
+  dummy_cols(GT, select_columns = "year", remove_first_dummy = TRUE)
 ```
 
 
-##SÅ KAN VI PRØVE AT AGGREGERE // split-apply-combine?
+#Split-apply-combine aggregation of gtrends dataset
 
 Summarization of the keyword data per country and year 
 
 ```{r}
-GTsum <- GTperf %>%
-  select(geo, year, year_2019, EU, Elec, EP) %>%
-  group_by(geo, year) %>%
+GTsum <- GT %>%
+ select(geo, year, year_2019, EU, Elec, EP) %>%
+  group_by(geo, year_2019) %>%
   dplyr::summarise(
     mean_EU = mean(EU), median_EU = median(EU), variance_EU = var(EU), total_EU = sum(EU),
     mean_EP = mean(EP), median_EP = median(EP), variance_EP = var(EP), total_EP = sum(EP),
     mean_Elec = mean(Elec), median_Elec = median(Elec), variance_Elec = var(Elec), 
     total_Elec = sum(Elec)) %>%
-  arrange(desc('year_2019'))
-
-glimpse(GTsum)
-
-
+  arrange(geo) %>% 
+  as_tibble() 
 ```
 
-# Quick data exploration
-
-KIG PÅ DET HER SENERE
+Renaming of values in the new grouped variable - since 'geo' was not renamed earlier - so that each country abbrevation is changed with full country name.
+This assures consistency for when the data will be merged with the VoterData (from earlier)
 
 ```{r}
-GTviz <- GTsum %>%
-  select(geo, year, total_EU, total_Elec, total_EP) %>%
-  group_by(geo, year) %>%
-  ggplot(aes(x = year)) +
-  geom_line(aes(y = total_Elec)) +
-  geom_line(aes(y = total_EP)) +
-  geom_line(aes(y = total_EU)) +
-  facet_wrap(~ geo)
-
-plot(GTviz)
+GTsum[GTsum$geo == 'AT', "geo"] <- 'Austria'
+GTsum[GTsum$geo == 'CZ', "geo"] <- 'Czech Republic'
+GTsum[GTsum$geo == 'DE', "geo"] <- 'Germany'
+GTsum[GTsum$geo == 'DK', "geo"] <- 'Denmark'
+GTsum[GTsum$geo == 'EE', "geo"] <- 'Estonia'
+GTsum[GTsum$geo == 'ES', "geo"] <- 'Spain'
+GTsum[GTsum$geo == 'FI', "geo"] <- 'Finland'
+GTsum[GTsum$geo == 'FR', "geo"] <- 'France'
+GTsum[GTsum$geo == 'GB', "geo"] <- 'United Kingdom'
+GTsum[GTsum$geo == 'HR', "geo"] <- 'Croatia'
+GTsum[GTsum$geo == 'HU', "geo"] <- 'Hungary'
+GTsum[GTsum$geo == 'IE', "geo"] <- 'Ireland'
+GTsum[GTsum$geo == 'IT', "geo"] <- 'Italy'
+GTsum[GTsum$geo == 'LU', "geo"] <- 'Luxembourg'
+GTsum[GTsum$geo == 'LV', "geo"] <- 'Latvia'
+GTsum[GTsum$geo == 'NL', "geo"] <- 'Netherlands'
+GTsum[GTsum$geo == 'PL', "geo"] <- 'Poland'
+GTsum[GTsum$geo == 'PT', "geo"] <- 'Portugal'
+GTsum[GTsum$geo == 'RO', "geo"] <- 'Romania'
+GTsum[GTsum$geo == 'SE', "geo"] <- 'Sweden'
+GTsum[GTsum$geo == 'SI', "geo"] <- 'Slovenia'
+GTsum[GTsum$geo == 'SK', "geo"] <- 'Slovakia'
 ```
+
+Change the name of the actual variable from 'geo' to 'Country'
+```{r}
+GTsum <- GTsum %>% 
+  rename(Country = 'geo')
+```
+
+#Regression analysis
+
+First of all we have to merge the two datasets 'GTsum' and 'VoterDat1419' 
+```{r}
+VotesTrends <- 
+  inner_join(GTsum, VoterDat1419, by = "Country")
+
+glimpse(VotesTrends)
+```
+
+
+Here we rename Voter Turnout
+```{r}
+VotesTrends <- VotesTrends %>% 
+  dplyr::rename(Voter_Turnout = 'Voter Turnout')
+```
+A simplified format is cor(x, use=, method= ) where
+
+Option	Description
+
+x ->	Matrix or data frame
+
+use ->	Specifies the handling of missing data. Options are 
+       all.obs (assumes no missing data - missing data will produce an error)
+       complete.obs (listwise deletion), and 
+       pairwise.complete.obs (pairwise deletion)
+
+method ->	Specifies the type of correlation. Options are pearson, spearman or kendall.
+
+
+REGRESSION
+
+Here I try to run a regression model
+
+y ~ x1 + x2, data = df
+
+
+MODEL 1
+```{r}
+m1 <- lm(Voter_Turnout ~ total_EP + total_EU + total_Elec + mean_EP +  mean_EU +  mean_Elec + median_EP + median_EU + median_Elec + variance_EP + variance_EU + variance_Elec + Country + year_2019 , data = VotesTrends)
+summary(m1)
+```
+
 
 ```{r}
 
 ```
-
-
-
-
-```{r} 
-
-```
-
-
-
-```{r}
-
-```
-
-
-
-```{r}
-
-```
-
-
-
-
-
-
-
-```{r}
-
-```
-
 
 
