@@ -60,12 +60,7 @@ m1 <- lm(Voter_Turnout ~ total_EP + total_EU + total_Elec + mean_EP +  mean_EU +
 summary(m1)
 ```
 
-From the model we gain a number of insights. With a Multiple R-squared of 0.8909, as well as a p-value that is < 0.0001, this first of all indicates that the model explains 89 percent of all the variability of the response data around its mean. Moreover it, the p-value, indicates what would normally be a rejection of the null-hypothesis. Therefore the overall conclusion of the term paper is that Google Trends can in fact be used as a predictor of voter turnout - at the very least for European Parliament elections. However we have to note a 
-
-
-## Discussion
-
-As shown in the analysis there is INDSÆT RESULTAT. This is in of itself a clear indicator that the idea of treating Google data as proxy for inention of voting is indeed valid.  
+From the model we gain a number of insights. With a Multiple R-squared of 0.8909, as well as a p-value that is < 0.0001, this first of all indicates that the model explains 89 percent of all the variability of the response data around its mean. Moreover it, the p-value, indicates what would normally be a rejection of the null-hypothesis. Therefore the overall conclusion of the term paper is that Google Trends can in fact be used as a predictor of voter turnout - at the very least for European Parliament elections. However one thing to note is the fact that Google Trends data in of itself can be tricky when it comes to making across-country comparisons. This follows from the normalization of Google Trends data that scales all keyword searches from 0 - 100. Moreover the necessity of using unique keywords for each country adds to the uncertainty of estimates.  
 
 
 ## References
