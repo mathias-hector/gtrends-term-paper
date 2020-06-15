@@ -402,9 +402,3 @@ m1 <- lm(Voter_Turnout ~ total_EP + total_EU + total_Elec + mean_EP +  mean_EU +
 summary(m1)
 ```
 
-
-```{r}
-
-```
-
-
